@@ -54,4 +54,21 @@ public class Tweet {
 
     @OneToMany(mappedBy = "tweet")
     private List<Comment> comments = new ArrayList<>();
+
+    public void likeTweet() {
+        likeCount++;
+    }
+
+    public void dislikeTweet() {
+        if(likeCount > 0) {
+            likeCount--;
+        }
+    }
+
+    public void addComment(Comment comment) {
+        if(comment == null) {
+            throw new IllegalArgumentException("Comment cannot be null");
+        }
+        comments.add(comment);
+    }
 }

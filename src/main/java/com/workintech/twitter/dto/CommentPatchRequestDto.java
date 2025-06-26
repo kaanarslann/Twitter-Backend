@@ -5,13 +5,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
-
-public record TweetPatchRequestDto(
+public record CommentPatchRequestDto(
         @NotNull
         @NotEmpty
         @NotBlank
         @Size(max = 280)
-        String post
+        String comment
 ) {
 }
