@@ -20,7 +20,6 @@ public class Like {
     private Long id;
 
     @Column(name = "liked_at")
-    @CreatedDate
     private LocalDateTime likedAt;
 
     @ManyToOne
