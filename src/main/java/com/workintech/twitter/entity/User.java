@@ -43,7 +43,7 @@ public class User {
     @Email
     private String email;
 
-    @Column(name = "user_name")
+    @Column(name = "password")
     @NotBlank
     @NotEmpty
     @NotNull
