@@ -12,6 +12,6 @@ public interface TweetService {
     List<TweetResponseDto> findByUserId(Long userId);
     TweetResponseDto save(TweetRequestDto tweet);
     TweetResponseDto update(Long id, TweetPatchRequestDto tweet);
-    void delete(Long id);
+    void delete(Long id, Long userId);
 
 }

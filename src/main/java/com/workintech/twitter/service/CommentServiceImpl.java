@@ -9,6 +9,7 @@ import com.workintech.twitter.entity.Tweet;
 import com.workintech.twitter.entity.User;
 import com.workintech.twitter.exceptions.CommentNotFoundException;
 import com.workintech.twitter.exceptions.TweetNotFoundException;
+import com.workintech.twitter.exceptions.TweetUserIdNotMatchedException;
 import com.workintech.twitter.exceptions.UserNotFoundException;
 import com.workintech.twitter.mapper.CommentMapper;
 import com.workintech.twitter.repository.CommentRepository;
@@ -56,7 +57,15 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void delete(Long id) {
-        commentRepository.deleteById(id);
+    public void delete(Long id, Long userId) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("Comment not found! Id no: " + id));
+        Long commentOwnerId = comment.getUser().getId();
+        Long tweetOwnerId = comment.getTweet().getUser().getId();
+        if(userId.equals(commentOwnerId) || userId.equals(tweetOwnerId)) {
+            commentRepository.deleteById(id);
+        } else {
+            throw new TweetUserIdNotMatchedException("Tweet User Id or Comment User Id does not match!");
+        }
+
     }
 }

@@ -7,5 +7,5 @@ import com.workintech.twitter.dto.CommentResponseDto;
 public interface CommentService {
     CommentResponseDto save(CommentRequestDto commentRequestDto);
     CommentResponseDto update(Long id, CommentPatchRequestDto commentPatchRequestDto);
-    void delete(Long id);
+    void delete(Long id, Long userId);
 }

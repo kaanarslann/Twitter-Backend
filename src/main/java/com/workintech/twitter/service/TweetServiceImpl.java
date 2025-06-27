@@ -6,6 +6,7 @@ import com.workintech.twitter.dto.TweetResponseDto;
 import com.workintech.twitter.entity.Tweet;
 import com.workintech.twitter.entity.User;
 import com.workintech.twitter.exceptions.TweetNotFoundException;
+import com.workintech.twitter.exceptions.TweetUserIdNotMatchedException;
 import com.workintech.twitter.exceptions.UserNotFoundException;
 import com.workintech.twitter.mapper.TweetMapper;
 import com.workintech.twitter.repository.TweetRepository;
@@ -60,7 +61,11 @@ public class TweetServiceImpl implements TweetService{
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long id, Long userId) {
+        Tweet tweet = tweetRepository.findById(id).orElseThrow(() -> new TweetNotFoundException("Tweet not found! Id no: " + id));
+        if(!tweet.getUser().getId().equals(userId)) {
+            throw new TweetUserIdNotMatchedException("Tweet User Id does not match!");
+        }
         tweetRepository.deleteById(id);
     }
 }

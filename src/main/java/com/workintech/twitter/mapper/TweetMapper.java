@@ -20,7 +20,7 @@ public class TweetMapper {
     }
 
     public TweetResponseDto toResponseDto(Tweet tweet) {
-        return new TweetResponseDto(tweet.getPost(), tweet.getLikeCount(), tweet.getCreatedAt(), tweet.getUpdatedAt(), tweet.getUser().getId(), tweet.getUser().getUserName());
+        return new TweetResponseDto(tweet.getPost(), tweet.getLikeCount(), tweet.getCreatedAt(), tweet.getUpdatedAt(), tweet.getUser().getId(), tweet.getUser().getNickName());
     }
 
     public Tweet updateEntity(Tweet tweetToUpdate, TweetPatchRequestDto patchRequestDto) {

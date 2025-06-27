@@ -16,6 +16,6 @@ public class LikeMapper {
     }
 
     public LikeResponseDto toResponseDto(Like like) {
-        return new LikeResponseDto(like.getLikedAt(), like.getUser().getId(), like.getUser().getUserName(), like.getTweet().getId());
+        return new LikeResponseDto(like.getLikedAt(), like.getUser().getId(), like.getUser().getNickName(), like.getTweet().getId());
     }
 }
