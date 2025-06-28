@@ -10,6 +10,7 @@ public record CommentPatchRequestDto(
         @NotEmpty
         @NotBlank
         @Size(max = 280)
-        String comment
+        String comment,
+        Long userId
 ) {
 }

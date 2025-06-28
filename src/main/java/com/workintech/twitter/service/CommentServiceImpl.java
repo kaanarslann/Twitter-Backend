@@ -51,6 +51,11 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public CommentResponseDto update(Long id, CommentPatchRequestDto commentPatchRequestDto) {
         Comment commentToUpdate = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("Comment not found! Id no: " + id));
+        Long commentOwnerId = commentToUpdate.getUser().getId();
+        if(!commentOwnerId.equals(commentPatchRequestDto.userId())) {
+            throw new TweetUserIdNotMatchedException("Comment User Id does not match!");
+        }
+
         commentToUpdate = commentMapper.updateEntity(commentToUpdate, commentPatchRequestDto);
 
         return commentMapper.toResponseDto(commentRepository.save(commentToUpdate));
@@ -66,6 +71,5 @@ public class CommentServiceImpl implements CommentService{
         } else {
             throw new TweetUserIdNotMatchedException("Tweet User Id or Comment User Id does not match!");
         }
-
     }
 }

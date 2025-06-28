@@ -1,5 +1,7 @@
 package com.workintech.twitter.controller;
 
+import com.workintech.twitter.dto.LoginRequestDto;
+import com.workintech.twitter.dto.LoginResponseDto;
 import com.workintech.twitter.dto.RegisterRequestDto;
 import com.workintech.twitter.dto.RegisterResponseDto;
 import com.workintech.twitter.service.AuthService;
@@ -22,5 +24,10 @@ public class AuthController {
     @PostMapping("/register")
     public RegisterResponseDto register(@Validated @RequestBody RegisterRequestDto requestDto) {
         return authService.register(requestDto);
+    }
+
+    @PostMapping("/login")
+    public LoginResponseDto login(@Validated @RequestBody LoginRequestDto requestDto) {
+        return authService.login(requestDto);
     }
 }

@@ -55,8 +55,10 @@ public class TweetServiceImpl implements TweetService{
     @Override
     public TweetResponseDto update(Long id, TweetPatchRequestDto tweetPatchRequestDto) {
         Tweet tweetToUpdate = tweetRepository.findById(id).orElseThrow(() -> new TweetNotFoundException("Tweet not found! Id no: " + id));
+        if(!tweetToUpdate.getUser().getId().equals(tweetPatchRequestDto.userId())) {
+            throw new TweetUserIdNotMatchedException("Tweet User Id does not match!");
+        }
         tweetToUpdate = tweetMapper.updateEntity(tweetToUpdate, tweetPatchRequestDto);
-
         return tweetMapper.toResponseDto(tweetRepository.save(tweetToUpdate));
     }
 

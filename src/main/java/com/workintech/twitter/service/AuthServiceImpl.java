@@ -1,14 +1,19 @@
 package com.workintech.twitter.service;
 
+import com.workintech.twitter.config.JwtService;
+import com.workintech.twitter.dto.LoginRequestDto;
+import com.workintech.twitter.dto.LoginResponseDto;
 import com.workintech.twitter.dto.RegisterRequestDto;
 import com.workintech.twitter.dto.RegisterResponseDto;
 import com.workintech.twitter.entity.Role;
 import com.workintech.twitter.entity.User;
 import com.workintech.twitter.exceptions.UserAlreadyRegisteredException;
+import com.workintech.twitter.exceptions.WrongPasswordException;
 import com.workintech.twitter.repository.RoleRepository;
 import com.workintech.twitter.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +34,9 @@ public class AuthServiceImpl implements AuthService{
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final JwtService jwtService;
 
 
     @Override
@@ -51,5 +59,17 @@ public class AuthServiceImpl implements AuthService{
         user = userRepository.save(user);
 
         return new RegisterResponseDto(user.getEmail(), "Registered successfully!");
+    }
+
+    @Override
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        User user = userRepository.findByEmail(loginRequestDto.email()).orElseThrow(() -> new UsernameNotFoundException("Username nor found' Username: " + loginRequestDto.email()));
+
+        if(!passwordEncoder.matches(loginRequestDto.password(), user.getPassword())) {
+            throw new WrongPasswordException("Password is not correct!");
+        }
+
+        String token = jwtService.generateToken(user);
+        return new LoginResponseDto(token, user.getFullName(), user.getNickName());
     }
 }
