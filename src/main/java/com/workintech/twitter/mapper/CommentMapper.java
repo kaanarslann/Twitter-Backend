@@ -18,7 +18,7 @@ public class CommentMapper {
     }
 
     public CommentResponseDto toResponseDto(Comment comment) {
-        return new CommentResponseDto(comment.getComment(), comment.getCreatedAt(), comment.getUser().getId(), comment.getUser().getNickName());
+        return new CommentResponseDto(comment.getId(), comment.getComment(), comment.getCreatedAt(), comment.getUser().getId(), comment.getUser().getNickName());
     }
 
     public Comment updateEntity(Comment commentToUpdate, CommentPatchRequestDto patchRequestDto) {

@@ -64,7 +64,7 @@ class TweetServiceImplTest {
         tweet.setUser(user);
 
         requestDto = new TweetRequestDto("Test", 1L);
-        responseDto = new TweetResponseDto(tweet.getPost(), 0, tweet.getCreatedAt(), null, user.getId(), user.getNickName());
+        responseDto = new TweetResponseDto(tweet.getId(), tweet.getPost(), 0, tweet.getCreatedAt(), null, user.getId(), user.getNickName());
     }
 
     @DisplayName("Can find tweet by id")

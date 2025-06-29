@@ -46,7 +46,7 @@ class TweetControllerTest {
     @DisplayName("Can find tweet by id")
     @Test
     void findById() throws Exception{
-        TweetResponseDto responseDto = new TweetResponseDto("Test", 0, LocalDateTime.now(), null, 1L, "TestUserNick");
+        TweetResponseDto responseDto = new TweetResponseDto(1L, "Test", 0, LocalDateTime.now(), null, 1L, "TestUserNick");
 
         Mockito.when(tweetService.findById(1L)).thenReturn(responseDto);
 
@@ -64,7 +64,7 @@ class TweetControllerTest {
     @Test
     void save() throws Exception {
         TweetRequestDto requestDto = new TweetRequestDto("Test", 1L);
-        TweetResponseDto responseDto = new TweetResponseDto("Test", 0, LocalDateTime.now(), null, 1L, "TestUserNick");
+        TweetResponseDto responseDto = new TweetResponseDto(1L, "Test", 0, LocalDateTime.now(), null, 1L, "TestUserNick");
 
         Mockito.when(tweetService.save(any(TweetRequestDto.class))).thenReturn(responseDto);
 
@@ -79,7 +79,7 @@ class TweetControllerTest {
     @Test
     void update() throws Exception {
         TweetPatchRequestDto patchRequestDto = new TweetPatchRequestDto("Update Test", 1L);
-        TweetResponseDto responseDto = new TweetResponseDto("Update Test", 0, LocalDateTime.now(), LocalDateTime.now(), 1L, "TestUserNick");
+        TweetResponseDto responseDto = new TweetResponseDto(1L, "Update Test", 0, LocalDateTime.now(), LocalDateTime.now(), 1L, "TestUserNick");
 
         Mockito.when(tweetService.update(eq(1L), any(TweetPatchRequestDto.class))).thenReturn(responseDto);
 

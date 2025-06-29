@@ -19,6 +19,6 @@ public class RetweetMapper {
     }
 
     public RetweetResponseDto toResponseDto(Retweet retweet) {
-        return new RetweetResponseDto(retweet.getComment(), retweet.getTweet().getPost(), retweet.getUser().getNickName(), retweet.getCreatedAt());
+        return new RetweetResponseDto(retweet.getId(), retweet.getComment(), retweet.getTweet().getPost(), retweet.getUser().getNickName(), retweet.getCreatedAt());
     }
 }
