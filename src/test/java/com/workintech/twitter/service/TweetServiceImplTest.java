@@ -1,9 +1,11 @@
 package com.workintech.twitter.service;
 
+import com.workintech.twitter.dto.TweetPatchRequestDto;
 import com.workintech.twitter.dto.TweetRequestDto;
 import com.workintech.twitter.dto.TweetResponseDto;
 import com.workintech.twitter.entity.Tweet;
 import com.workintech.twitter.entity.User;
+import com.workintech.twitter.exceptions.TweetUserIdNotMatchedException;
 import com.workintech.twitter.exceptions.UserNotFoundException;
 import com.workintech.twitter.mapper.TweetMapper;
 import com.workintech.twitter.repository.TweetRepository;
@@ -59,6 +61,7 @@ class TweetServiceImplTest {
         user.setEmail("user@user.com");
         user.setPassword("Test12345");
         user.setCreatedAt(LocalDate.now());
+        tweet.setUser(user);
 
         requestDto = new TweetRequestDto("Test", 1L);
         responseDto = new TweetResponseDto(tweet.getPost(), 0, tweet.getCreatedAt(), null, user.getId(), user.getNickName());
@@ -74,11 +77,6 @@ class TweetServiceImplTest {
 
         assertNotNull(actualResponseDto);
         assertEquals(responseDto.post(), actualResponseDto.post());
-    }
-
-    @Test
-    void findByUserId() {
-
     }
 
     @DisplayName("Can save tweet with userId")
@@ -106,11 +104,43 @@ class TweetServiceImplTest {
         });
     }
 
+    @DisplayName("Can update tweet with userId")
     @Test
     void update() {
+        TweetPatchRequestDto tweetPatchRequestDto = new TweetPatchRequestDto("Update", 1L);
+        Tweet updatedTweet = new Tweet();
+        updatedTweet.setPost("Update");
+        updatedTweet.setUser(user);
+        updatedTweet.setCreatedAt(LocalDateTime.now());
+        updatedTweet.setUpdatedAt(LocalDateTime.now());
+
+        Mockito.when(tweetRepository.findById(1L)).thenReturn(Optional.of(tweet));
+        Mockito.when(tweetMapper.updateEntity(tweet, tweetPatchRequestDto)).thenReturn(updatedTweet);
+        Mockito.when(tweetRepository.save(updatedTweet)).thenReturn(updatedTweet);
+        Mockito.when(tweetMapper.toResponseDto(updatedTweet)).thenReturn(responseDto);
+
+        TweetResponseDto actualPatchRequestDto = tweetService.update(1L, tweetPatchRequestDto);
+
+        assertNotNull(actualPatchRequestDto);
+        assertEquals("Test", actualPatchRequestDto.post());
     }
 
+    @DisplayName("Can delete tweet")
     @Test
     void delete() {
+        Mockito.when(tweetRepository.findById(1L)).thenReturn(Optional.of(tweet));
+        tweetService.delete(1L, user.getId());
+
+        Mockito.verify(tweetRepository).deleteById(1L);
+    }
+    @DisplayName("Can throw exception when userId does not match")
+    void deleteFail() {
+        Mockito.when(tweetRepository.findById(1L)).thenReturn(Optional.of(tweet));
+
+        assertThrows(TweetUserIdNotMatchedException.class, () -> {
+            tweetService.delete(1L, 90L);
+        });
+
+        Mockito.verify(tweetRepository, Mockito.never()).deleteById(Mockito.anyLong());
     }
 }

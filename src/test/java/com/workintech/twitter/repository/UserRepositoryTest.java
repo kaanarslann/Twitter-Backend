@@ -23,15 +23,14 @@ class UserRepositoryTest {
     @Test
     void findByEmail() {
         User user = new User();
-        user.setId(1L);
-        user.setFullName("User");
-        user.setNickName("UserNick");
-        user.setEmail("user@user.com");
-        user.setPassword("Test12345");
+        user.setFullName("TestUser");
+        user.setNickName("TestUserNick");
+        user.setEmail("usertest@user.com");
+        user.setPassword("Test123456");
         user.setCreatedAt(LocalDate.now());
         userRepository.save(user);
         
-        User foundUser = userRepository.findByEmail("user@user.com").orElseThrow(() -> new AssertionError("User not found!"));
+        User foundUser = userRepository.findByEmail("usertest@user.com").orElseThrow(() -> new AssertionError("User not found!"));
 
         assertNotNull(foundUser);
         assertEquals(user.getId(), foundUser.getId());
